@@ -13,8 +13,11 @@ class User(Base):
     id = Column(Integer, primary_key=True)
     username = Column(String(100), unique=True, nullable=False)
     password = Column(String(20), nullable=False)
-    #people = relationship("people")
-    
+    people_ = db.relationship('People', backref='user', lazy=True) #
+    planets = db.relationship('Planet', backref='user', lazy=True) #
+    starships = db.relationship('Starship', backref='user', lazy=True) #
+
+
 class People(Base):
     __tablename__ = 'people'
     id = Column(Integer, primary_key=True)
@@ -29,7 +32,7 @@ class People(Base):
     img_url: Column(String)
     homeworld = relationship("Planet", back_populates="people")
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="favorites_person")
+   # user = relationship("User")
 
 class Planet(Base):
     __tablename__ = 'planet'
@@ -46,7 +49,7 @@ class Planet(Base):
     img_url: Column(String)
     people = relationship("People")
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User", back_populates="favorites_planets")
+   # user = relationship("User")
 
 class Starship(Base):
     __tablename__ = 'starship'
@@ -67,7 +70,7 @@ class Starship(Base):
     img_url: Column(String)
     #people = relationship("People", uselist=False)
     user_id = Column(Integer, ForeignKey('user.id'))
-    user = relationship("User")
+    #user = relationship("User")
 
     def to_dict(self):
         return {}
