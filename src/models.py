@@ -11,32 +11,24 @@ Base = declarative_base()
 class User(Base):
     __tablename__ = 'user'
     id = Column(Integer, primary_key=True)
-    username = Column(String(100), unique=True, nullable=False)
-    password = Column(String(20), nullable=False)
-    people_ = db.relationship('People', backref='user', lazy=True) #
-    planets = db.relationship('Planet', backref='user', lazy=True) #
-    starships = db.relationship('Starship', backref='user', lazy=True) #
-
-
-class People(Base):
-    __tablename__ = 'people'
-    id = Column(Integer, primary_key=True)
-    height = Column(String(50))
-    mass = Column(String(50))
-    hair_color = Column(String(50))
-    skin_color = Column(String(50))
-    eye_color = Column(String(50))
-    birth_year = Column(String(50))
-    gender = Column(String(50))
     name = Column(String(50), nullable=False)
-    img_url: Column(String)
-    homeworld = relationship("Planet", back_populates="people")
-    user_id = Column(Integer, ForeignKey('user.id'))
-   # user = relationship("User")
+    email = Column(String(80), nullable=False)
+    password = Column(String(50), nullable=False)
+
+
+class Character(Base):
+    __tablename__ = 'character'
+    id = Column(Integer, primary_key=True)
+    name = Column(String(250), nullable=False)
+    hair_color = Column(String(250))
+    homeworld = Column(String(250))
+    eye_color = Column(String(250))
+    gender = Column(String(250)) 
 
 class Planet(Base):
     __tablename__ = 'planet'
     id = Column(Integer, primary_key=True)
+    name = Column(String(50), nullable=False)
     diameter = Column(String(50))
     rotation_period = Column(String(50))
     orbital_period = Column(String(50))
@@ -44,33 +36,17 @@ class Planet(Base):
     population = Column(String(50))
     climate = Column(String(50))
     terrain = Column(String(50))
-    surface_water = Column(String(50))
-    name = Column(String(50), nullable=False)
-    img_url: Column(String)
-    people = relationship("People")
-    user_id = Column(Integer, ForeignKey('user.id'))
-   # user = relationship("User")
 
-class Starship(Base):
-    __tablename__ = 'starship'
+class Favorite(Base):
+    __tablename__ = 'favorite'
     id = Column(Integer, primary_key=True)
-    model = Column(String(50))
-    starship_class = Column(String(50))
-    manufacturer = Column(String(50))
-    cost_in_credits = Column(String(50))
-    length = Column(String(50))
-    crew = Column(String(50))
-    passengers = Column(String(50))
-    max_atmosphering_speed = Column(String(50))
-    hyperdrive_rating = Column(String(50))
-    MGLT = Column(String(50))
-    cargo_capacity = Column(String(50))
-    consumables = Column(String(50))
-    name = Column(String(50), nullable=False)
-    img_url: Column(String)
-    #people = relationship("People", uselist=False)
     user_id = Column(Integer, ForeignKey('user.id'))
-    #user = relationship("User")
+    user = relationship(User)
+    character_id = Column(Integer, ForeignKey('character.id'))
+    character = relationship(Character)
+    planet_id = Column(Integer, ForeignKey('planet.id'))
+    planet = relationship(Planet)
+
 
     def to_dict(self):
         return {}
